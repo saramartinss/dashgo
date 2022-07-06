@@ -1,5 +1,12 @@
 import {
+  Message,
+  MultipleFieldErrors,
+  Ref,
+  UseFormRegisterReturn,
+} from "react-hook-form";
+import {
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Input as ChakraInput,
   InputProps as ChakraInputProps,
@@ -8,11 +15,24 @@ import {
 interface InputProps extends ChakraInputProps {
   name: string;
   label?: string;
+  register?: UseFormRegisterReturn;
+  error?: {
+    type?: string;
+    ref?: Ref;
+    types?: MultipleFieldErrors;
+    message?: Message;
+  };
 }
 
-export function Input({ name, label, ...rest }: InputProps) {
+export const Input = ({
+  name,
+  label,
+  error = null,
+  register,
+  ...rest
+}: InputProps) => {
   return (
-    <FormControl>
+    <FormControl isInvalid={!!error}>
       {!!label && <FormLabel htmlFor="email">{label}</FormLabel>}
 
       <ChakraInput
@@ -25,8 +45,10 @@ export function Input({ name, label, ...rest }: InputProps) {
           bgColor: "gray.900",
         }}
         size="lg"
+        {...register}
         {...rest}
       />
+      {!!error && <FormErrorMessage>{error.message}</FormErrorMessage>}
     </FormControl>
   );
-}
+};
