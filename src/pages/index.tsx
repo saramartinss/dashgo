@@ -23,8 +23,6 @@ export default function SignIn() {
 
   const handleSignIn = async (data: SignInFormData) => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    console.log(data);
   };
 
   return (
